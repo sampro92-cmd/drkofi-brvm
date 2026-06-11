@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dr. Kofi — Conseiller BRVM</title>
+
+  <!-- PWA Meta -->
+  <meta name="theme-color" content="#0A0F0D" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Dr. Kofi" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="description" content="Conseiller IA BRVM pour le portefeuille Futur Afrique+" />
+
+  <!-- Inline Manifest via JS (no separate file needed) -->
+  <script>
+    const manifestData = {
+      name: "Dr. Kofi — Conseiller BRVM",
+      short_name: "Dr. Kofi",
+      description: "Conseiller IA spécialisé BRVM — Futur Afrique+",
+      start_url: ".",
+      display: "standalone",
+      background_color: "#0A0F0D",
+      theme_color: "#0A0F0D",
+      orientation: "portrait",
+      icons: [
+        { src: generateIcon(192), sizes: "192x192", type: "image/png" },
+        { src: generateIcon(512), sizes: "512x512", type: "image/png" }
+      ]
+    };
+
+    function generateIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const r = size * 0.12;
+      ctx.beginPath();
+      ctx.moveTo(r, 0); ctx.lineTo(size - r, 0);
+      ctx.quadraticCurveTo(size, 0, size, r);
+      ctx.lineTo(size, size - r);
+      ctx.quadraticCurveTo(size, size, size - r, size);
+      ctx.lineTo(r, size);
+      ctx.quadraticCurveTo(0, size, 0, size - r);
+      ctx.lineTo(0, r);
+      ctx.quadraticCurveTo(0, 0, r, 0);
+      ctx.closePath();
+      ctx.fillStyle = '#0A4F2E';
+      ctx.fill();
+      ctx.fillStyle = '#1DB975';
+      ctx.font = `bold ${size * 0.32}px -apple-system, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('DK', size / 2, size * 0.44);
+      ctx.fillStyle = '#D4AF37';
+      ctx.font = `${size * 0.13}px -apple-system, sans-serif`;
+      ctx.fillText('BRVM', size / 2, size * 0.72);
+      return canvas.toDataURL('image/png');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const iconData = generateIcon(192);
+      manifestData.icons[0].src = iconData;
+      manifestData.icons[1].src = generateIcon(512);
+      const blob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('link');
+      link.rel = 'manifest'; link.href = url;
+      document.head.appendChild(link);
+
+      // Apple touch icon
+      const appleLink = document.createElement('link');
+      appleLink.rel = 'apple-touch-icon';
+      appleLink.href = iconData;
+      document.head.appendChild(appleLink);
+    });
+  </script>
+
+  <style>
+    :root {
+      --bg-primary: #0A0F0D;
+      --bg-secondary: #111915;
+      --bg-card: #141C18;
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.12);
+      --green: #0D7A4E;
+      --green-bright: #1DB975;
+      --gold: #D4AF37;
+      --text-primary: #E8F0EB;
+      --text-secondary: #8FA89A;
+      --text-muted: #4D6357;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font);
+      overflow: hidden;
+    }
+
+    #root {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      height: -webkit-fill-available;
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
+    }
+
+    /* ── TOP BAR ── */
+    #topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-shrink: 0;
+    }
+
+    .avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0A4F2E, #0D7A4E);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600; color: #fff;
+      position: relative; flex-shrink: 0;
+    }
+
+    .avatar::after {
+      content: '';
+      position: absolute;
+      bottom: 1px; right: 1px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--green-bright);
+      border: 2px solid var(--bg-secondary);
+    }
+
+    .topbar-info { flex: 1; }
+
+    .topbar-name {
+      font-size: 15px; font-weight: 600;
+      color: var(--text-primary); line-height: 1.2;
+    }
+
+    .topbar-sub {
+      font-size: 11px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    .status-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--green-bright);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    #portfolio-btn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 18px;
+    }
+
+    /* ── API KEY BANNER ── */
+    #api-banner {
+      padding: 10px 16px;
+      background: linear-gradient(135deg, #0A2A1A, #0A1F14);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    #api-banner p {
+      font-size: 11px; color: var(--text-muted); margin-bottom: 8px;
+    }
+
+    #api-banner p strong { color: var(--gold); }
+
+    .api-row { display: flex; gap: 8px; }
+
+    #api-input {
+      flex: 1;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--text-primary);
+      font-family: var(--font);
+    }
+
+    #api-input:focus { outline: none; border-color: var(--green); }
+    #api-input::placeholder { color: var(--text-muted); }
+
+    #api-save {
+      padding: 8px 16px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+
+    /* ── PORTFOLIO DRAWER ── */
+    #drawer-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 100;
+      backdrop-filter: blur(2px);
+    }
+
+    #drawer {
+      position: fixed;
+      top: 0; right: -320px;
+      width: 300px; height: 100%;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border-strong);
+      z-index: 101;
+      transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+      padding-top: var(--safe-top);
+    }
+
+    #drawer.open { right: 0; }
+
+    #drawer-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    #drawer-header h2 { font-size: 15px; font-weight: 600; }
+
+    #drawer-close {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .phase-label {
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 12px 16px 6px;
+    }
+
+    .phase-badge {
+      display: inline-flex; align-items: center;
+      margin: 0 16px 8px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+    }
+
+    .badge-green { background: rgba(13,122,78,0.2); color: var(--green-bright); border: 1px solid rgba(13,122,78,0.3); }
+    .badge-gold { background: rgba(212,175,55,0.15); color: var(--gold); border: 1px solid rgba(212,175,55,0.25); }
+
+    .drawer-scroll { flex: 1; overflow-y: auto; padding-bottom: 16px; }
+    .drawer-scroll::-webkit-scrollbar { width: 3px; }
+    .drawer-scroll::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+
+    .stock-item {
+      display: flex; align-items: center;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      transition: background 0.15s;
+    }
+
+    .stock-item:hover, .stock-item:active { background: var(--bg-card); }
+
+    .stock-icon {
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+      color: var(--green-bright);
+      flex-shrink: 0;
+    }
+
+    .stock-details { flex: 1; min-width: 0; }
+    .stock-ticker { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .stock-name { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .stock-qty { font-size: 11px; color: var(--text-secondary); flex-shrink: 0; }
+
+    .drawer-footer {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .goal-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .goal-title { font-size: 11px; color: var(--text-secondary); }
+    .goal-amount { font-size: 11px; color: var(--gold); font-weight: 600; }
+    .goal-bar { height: 3px; background: var(--border-strong); border-radius: 2px; overflow: hidden; }
+    .goal-fill { height: 100%; width: 0.8%; background: var(--green); border-radius: 2px; }
+
+    /* ── MESSAGES ── */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex; flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+    }
+
+    #messages::-webkit-scrollbar { width: 3px; }
+    #messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .msg { display: flex; flex-direction: column; max-width: 88%; }
+    .msg.user { align-self: flex-end; align-items: flex-end; }
+    .msg.bot { align-self: flex-start; align-items: flex-start; }
+
+    .msg-label { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; padding: 0 4px; }
+
+    .msg-bubble {
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px; line-height: 1.6;
+    }
+
+    .msg.user .msg-bubble {
+      background: var(--green);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg.bot .msg-bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      border-bottom-left-radius: 4px;
+    }
+
+    .typing-bubble {
+      display: flex; align-items: center; gap: 5px;
+      padding: 12px 16px;
+    }
+
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--text-muted);
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%,60%,100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* ── QUICK CHIPS ── */
+    #chips {
+      padding: 8px 16px 6px;
+      display: flex; gap: 7px;
+      overflow-x: auto; flex-shrink: 0;
+      scrollbar-width: none;
+    }
+
+    #chips::-webkit-scrollbar { display: none; }
+
+    .chip {
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      font-family: var(--font);
+    }
+
+    .chip:active { border-color: var(--green); color: var(--green-bright); }
+
+    /* ── INPUT BAR ── */
+    #input-bar {
+      display: flex; align-items: flex-end;
+      gap: 10px; padding: 10px 16px 12px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-shrink: 0;
+    }
+
+    #user-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+      padding: 10px 16px;
+      font-size: 14px; color: var(--text-primary);
+      font-family: var(--font);
+      resize: none;
+      min-height: 42px; max-height: 120px;
+      line-height: 1.4;
+    }
+
+    #user-input:focus { outline: none; border-color: var(--green); }
+    #user-input::placeholder { color: var(--text-muted); }
+
+    #send-btn {
+      width: 42px; height: 42px; flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--green);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.15s, transform 0.1s;
+      font-size: 18px;
+    }
+
+    #send-btn:active { transform: scale(0.92); }
+    #send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* ── WELCOME SCREEN ── */
+    #welcome {
+      text-align: center;
+      padding: 32px 24px;
+      max-width: 320px;
+      margin: auto;
+    }
+
+    .welcome-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #0A4F2E, #0D7A4E);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700; color: #fff;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 0 8px rgba(13,122,78,0.1);
+    }
+
+    .welcome-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .welcome-sub { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px; }
+
+    .welcome-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
+    /* ── RESPONSIVE DESKTOP ── */
+    @media (min-width: 768px) {
+      #root { flex-direction: row; max-width: 900px; margin: 20px auto; height: calc(100vh - 40px); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); overflow: hidden; }
+      #drawer, #drawer-overlay { display: none !important; }
+      #sidebar {
+        width: 240px; flex-shrink: 0;
+        background: var(--bg-secondary);
+        border-right: 1px solid var(--border);
+        display: flex; flex-direction: column;
+        overflow: hidden;
+      }
+      #main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+      #portfolio-btn { display: none; }
+    }
+
+    #sidebar {
+      display: none;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 16px; border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-brand { font-size: 15px; font-weight: 600; }
+    .sidebar-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    .sidebar-scroll { flex: 1; overflow-y: auto; padding: 0 8px 8px; }
+    .sidebar-scroll::-webkit-scrollbar { width: 3px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .sidebar-stock {
+      display: flex; align-items: center;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer; gap: 10px;
+      transition: background 0.12s;
+    }
+    .sidebar-stock:hover { background: var(--bg-card); }
+
+    .sidebar-footer { padding: 12px 16px; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<div id="root">
+  <!-- DESKTOP SIDEBAR -->
+  <div id="sidebar">
+    <div class="sidebar-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="avatar" style="width:36px;height:36px;font-size:12px">DK</div>
+        <div>
+          <div class="sidebar-brand">Dr. Kofi</div>
+          <div class="sidebar-sub"><span class="status-dot" style="display:inline-block"></span> BRVM · Actif</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-label" style="padding-top:12px">Futur Afrique+ — Phase 1</div>
+    <span class="phase-badge badge-green" style="margin-left:12px">9 titres actifs</span>
+
+    <div class="sidebar-scroll" id="sidebar-stocks"></div>
+
+    <div class="sidebar-footer">
+      <div class="goal-row">
+        <span class="goal-title">Objectif 100M FCFA</span>
+        <span class="goal-amount">~11 ans</span>
+      </div>
+      <div class="goal-bar"><div class="goal-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- MAIN AREA -->
+  <div id="main-area" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+    <!-- TOP BAR -->
+    <div id="topbar">
+      <div class="avatar">DK</div>
+      <div class="topbar-info">
+        <div class="topbar-name">Dr. Kofi</div>
+        <div class="topbar-sub">
+          <span class="status-dot"></span>
+          Conseiller IA BRVM · Gemini
+        </div>
+      </div>
+      <div id="portfolio-btn" onclick="toggleDrawer()" title="Portefeuille">📊</div>
+    </div>
+
+    <!-- API KEY BANNER -->
+    <div id="api-banner">
+      <p>🔑 Entrez votre <strong>clé API Gemini</strong> pour activer Dr. Kofi</p>
+      <div class="api-row">
+        <input type="password" id="api-input" placeholder="AIza..." autocomplete="off" />
+        <button id="api-save" onclick="saveKey()">Activer</button>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div id="messages">
+      <div id="welcome">
+        <div class="welcome-avatar">DK</div>
+        <div class="welcome-title">Bonjour, Usman !</div>
+        <div class="welcome-sub">Je suis Dr. Kofi, votre conseiller IA spécialisé BRVM. Je connais votre portefeuille <strong>Futur Afrique+</strong> et je suis prêt à vous guider.</div>
+        <div class="welcome-chips">
+          <span class="chip" onclick="sendChip('Analyse mon portefeuille Phase 1')">Analyser Phase 1</span>
+          <span class="chip" onclick="sendChip('Quels dividendes espérer cette année ?')">Dividendes 2025</span>
+          <span class="chip" onclick="sendChip('Mon DCA de 50 000 FCFA est-il bien alloué ?')">Stratégie DCA</span>
+          <span class="chip" onclick="sendChip('Quand et comment lancer la Phase 2 ?')">Phase 2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHIPS -->
+    <div id="chips" style="display:none">
+      <span class="chip" onclick="sendChip('Analyse mon portefeuille Phase 1')">Phase 1</span>
+      <span class="chip" onclick="sendChip('Dividendes attendus cette année ?')">Dividendes</span>
+      <span class="chip" onclick="sendChip('Mon DCA 50k FCFA est-il optimal ?')">DCA</span>
+      <span class="chip" onclick="sendChip('Risques actuels sur la BRVM ?')">Risques</span>
+      <span class="chip" onclick="sendChip('Quand lancer la Phase 2 ?')">Phase 2</span>
+      <span class="chip" onclick="sendChip('Titre le plus solide de mon portefeuille ?')">Meilleur titre</span>
+    </div>
+
+    <!-- INPUT BAR -->
+    <div id="input-bar">
+      <textarea id="user-input" placeholder="Posez votre question…" rows="1"
+        onkeydown="handleKey(event)" oninput="autoResize(this)" disabled></textarea>
+      <button id="send-btn" onclick="sendMessage()" disabled>➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div id="drawer">
+  <div id="drawer-header">
+    <h2>📊 Futur Afrique+</h2>
+    <button id="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-scroll">
+    <div class="phase-label">Phase 1 — Actif</div>
+    <span class="phase-badge badge-green">9 titres achetés</span>
+    <div id="drawer-stocks"></div>
+    <div class="phase-label" style="padding-top:10px">Phase 2 — Planifiée</div>
+    <span class="phase-badge badge-gold">3–6 mois</span>
+    <div id="drawer-stocks-2"></div>
+  </div>
+  <div class="drawer-footer">
+    <div class="goal-row">
+      <span class="goal-title">Objectif 100M FCFA</span>
+      <span class="goal-amount">~11 ans</span>
+    </div>
+    <div class="goal-bar"><div class="goal-fill"></div></div>
+  </div>
+</div>
+
+<script>
+  // ── DATA ──
+  const PORTFOLIO_P1 = [
+    { ticker:'SNTS', name:'Sonatel', qty:26 },
+    { ticker:'BOABF', name:'BOA Burkina Faso', qty:107 },
+    { ticker:'STBC', name:'SITAB CI', qty:20 },
+    { ticker:'SOGC', name:'SOGB CI', qty:58 },
+    { ticker:'TTLC', name:'TotalEnergies CI', qty:103 },
+    { ticker:'CBIBF', name:'Coris Bank BF', qty:6 },
+    { ticker:'STAC', name:'Servair Abidjan', qty:50 },
+    { ticker:'CIEC', name:'CIE CI', qty:66 },
+    { ticker:'NSBC', name:'NSIA Banque CI', qty:6 },
+  ];
+
+  const PORTFOLIO_P2 = [
+    { ticker:'CABC', name:'SICABLE CI', qty:null },
+    { ticker:'SPHC', name:'SAPHIC CI', qty:null },
+  ];
+
+  const SYSTEM_PROMPT = `Tu es Dr. Kofi, un conseiller financier IA expert de la BRVM (Bourse Régionale des Valeurs Mobilières d'Afrique de l'Ouest). Tu parles exclusivement en français, avec un ton professionnel mais accessible.
+
+CONTEXTE — Usman (Dakar, Sénégal, guide touristique indépendant) :
+- Portefeuille "Futur Afrique+" géré via CGF Bourse (CGF ACCESS)
+- Objectif : 100 000 000 FCFA long terme (~11 ans, rendement cible 18-22%/an)
+- Phase 1 achetée : SNTS/Sonatel (26 actions), BOABF/BOA Burkina (107), STBC/SITAB CI (20), SOGC/SOGB CI (58), TTLC/TotalEnergies CI (103), CBIBF/Coris Bank BF (6), STAC/Servair Abidjan (50), CIEC/CIE CI (66), NSBC/NSIA Banque CI (6)
+- Phase 2 planifiée (3-6 mois) : CABC/SICABLE CI, SPHC/SAPHIC CI
+- DCA mensuel : 50 000 FCFA → SNTS 30%, STBC 25%, BOABF 20%, SOGC 15%, TTLC 10%
+- Broker : CGF Bourse, commission ~1% courtage
+
+RÈGLES :
+- CABC = SICABLE CI (câbles électriques), PAS Coris Bank
+- Ne jamais inventer des cours ou prix en temps réel (dire de consulter BRVM.org, SikaFinance ou FluxBourse)
+- Conseiller sur stratégie, allocation, diversification, dividendes, gestion du risque
+- Réponses concises mais précises, bien structurées
+- Incarner un conseiller de confiance qui connaît parfaitement le marché UEMOA`;
+
+  let apiKey = '';
+  let history = [];
+
+  // ── RENDER PORTFOLIOS ──
+  function renderPortfolio(stocks, containerId, phase) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = stocks.map(s => `
+      <div class="${containerId === 'sidebar-stocks' ? 'sidebar-stock' : 'stock-item'}" onclick="askAbout('${s.ticker}','${s.name}')">
+        <div class="${containerId === 'sidebar-stocks' ? 'stock-icon' : 'stock-icon'}" style="width:34px;height:34px;border-radius:8px;background:var(--bg-${containerId==='sidebar-stocks'?'primary':'secondary'});border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--green-bright);flex-shrink:0">${s.ticker.substring(0,4)}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary)">${s.ticker}</div>
+          <div style="font-size:11px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.name}</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-secondary);flex-shrink:0">${s.qty ? s.qty+' act.' : '—'}</div>
+      </div>
+    `).join('');
+  }
+
+  renderPortfolio(PORTFOLIO_P1, 'drawer-stocks');
+  renderPortfolio(PORTFOLIO_P2, 'drawer-stocks-2');
+  renderPortfolio(PORTFOLIO_P1.concat(PORTFOLIO_P2), 'sidebar-stocks');
+
+  // ── DRAWER ──
+  function toggleDrawer() {
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    drawer.classList.toggle('open');
+    overlay.style.display = drawer.classList.contains('open') ? 'block' : 'none';
+  }
+
+  function closeDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').style.display = 'none';
+  }
+
+  // ── API KEY ──
+  function saveKey() {
+    const val = document.getElementById('api-input').value.trim();
+    if (!val) return;
+    apiKey = val;
+    document.getElementById('api-banner').style.display = 'none';
+    document.getElementById('user-input').disabled = false;
+    document.getElementById('send-btn').disabled = false;
+    document.getElementById('chips').style.display = 'flex';
+    const welcome = document.getElementById('welcome');
+    if (welcome) {
+      const bubble = document.createElement('div');
+      bubble.className = 'msg bot';
+      bubble.innerHTML = `<div class="msg-label">Dr. Kofi</div><div class="msg-bubble">Parfait, Usman ! Je suis maintenant connecté et prêt à vous conseiller. Posez-moi votre question ou utilisez les raccourcis ci-dessus. 🇸🇳📈</div>`;
+      document.getElementById('messages').innerHTML = '';
+      document.getElementById('messages').appendChild(bubble);
+    }
+  }
+
+  document.getElementById('api-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveKey();
+  });
+
+  // ── SEND ──
+  function askAbout(ticker, name) {
+    if (!apiKey) { alert('Entrez d\'abord votre clé API Gemini.'); return; }
+    const q = `Analyse rapide de ${ticker} (${name}) dans mon portefeuille Futur Afrique+. Perspectives, dividendes, risques.`;
+    document.getElementById('user-input').value = q;
+    closeDrawer();
+    sendMessage();
+  }
+
+  function sendChip(text) {
+    if (!apiKey) { alert('Entrez d\'abord votre clé API Gemini.'); return; }
+    document.getElementById('user-input').value = text;
+    sendMessage();
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  }
+
+  function addMsg(role, text) {
+    const msgs = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+    const formatted = text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    div.innerHTML = `<div class="msg-label">${role==='user'?'Usman':'Dr. Kofi'}</div><div class="msg-bubble">${formatted}</div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function showTyping() {
+    const msgs = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg bot'; div.id = 'typing';
+    div.innerHTML = `<div class="msg-label">Dr. Kofi</div><div class="msg-bubble"><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const text = input.value.trim();
+    if (!text || !apiKey) return;
+
+    input.value = ''; input.style.height = 'auto';
+    document.getElementById('send-btn').disabled = true;
+
+    addMsg('user', text);
+    history.push({ role:'user', parts:[{text}] });
+    showTyping();
+
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            system_instruction: { parts:[{text: SYSTEM_PROMPT}] },
+            contents: history,
+            generationConfig: { temperature:0.72, maxOutputTokens:1024 }
+          })
+        }
+      );
+      const data = await res.json();
+      document.getElementById('typing')?.remove();
+
+      if (data.error) {
+        addMsg('bot', `❌ Erreur API : ${data.error.message}`);
+      } else {
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Désolé, aucune réponse.';
+        history.push({ role:'model', parts:[{text:reply}] });
+        addMsg('bot', reply);
+      }
+    } catch(err) {
+      document.getElementById('typing')?.remove();
+      addMsg('bot', `❌ Connexion impossible : ${err.message}`);
+    }
+
+    document.getElementById('send-btn').disabled = false;
+  }
+
+  // ── SERVICE WORKER (offline) ──
+  if ('serviceWorker' in navigator) {
+    const swCode = `
+      const CACHE = 'dr-kofi-v1';
+      self.addEventListener('install', e => {
+        e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './dr-kofi.html'])));
+      });
+      self.addEventListener('fetch', e => {
+        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+      });
+    `;
+    const blob = new Blob([swCode], {type:'application/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+  }
+</script>
+</body>
+</html>
