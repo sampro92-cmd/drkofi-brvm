@@ -31,28 +31,41 @@
     });
   </script>
   <style>
-    :root{--bg:#0A0F0D;--bg2:#111915;--bgc:#141C18;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--green:#0D7A4E;--gbright:#1DB975;--gold:#D4AF37;--red:#FF6B6B;--t1:#E8F0EB;--t2:#8FA89A;--t3:#4D6357;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);}
+    :root{--bg:#0A0F0D;--bg2:#111915;--bgc:#141C18;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--green:#0D7A4E;--gbright:#1DB975;--gold:#D4AF37;--red:#FF6B6B;--orange:#FF9500;--t1:#E8F0EB;--t2:#8FA89A;--t3:#4D6357;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);}
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     html,body{height:100%;background:var(--bg);color:var(--t1);font-family:var(--font);overflow:hidden;}
     #root{display:flex;flex-direction:column;height:100%;height:-webkit-fill-available;padding-top:var(--safe-top);padding-bottom:var(--safe-bot);}
 
     /* TOPBAR */
-    #topbar{display:flex;align-items:center;gap:12px;padding:12px 16px 10px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
-    .avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0A4F2E,#0D7A4E);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;position:relative;flex-shrink:0;}
-    .avatar::after{content:'';position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:var(--gbright);border:2px solid var(--bg2);}
-    .tb-info{flex:1;}.tb-name{font-size:15px;font-weight:600;}.tb-sub{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:4px;}
+    #topbar{display:flex;align-items:center;gap:10px;padding:12px 16px 10px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
+    .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0A4F2E,#0D7A4E);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff;position:relative;flex-shrink:0;}
+    .avatar::after{content:'';position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;background:var(--gbright);border:2px solid var(--bg2);}
+    .tb-info{flex:1;}.tb-name{font-size:14px;font-weight:600;}.tb-sub{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:4px;}
     .sdot{width:5px;height:5px;border-radius:50%;background:var(--gbright);animation:blink 2s ease-in-out infinite;display:inline-block;}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-    .tb-btn{width:36px;height:36px;border-radius:8px;background:var(--bgc);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;}
+    .tb-btn{width:34px;height:34px;border-radius:8px;background:var(--bgc);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;position:relative;}
+    .badge-count{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--red);font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bg2);}
+
+    /* ALERT BANNER */
+    #alert-banner{display:none;padding:0 16px;flex-shrink:0;gap:6px;flex-direction:column;max-height:120px;overflow-y:auto;}
+    #alert-banner.active{display:flex;padding:8px 16px;}
+    .alert-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;font-size:12px;animation:slideIn 0.3s ease;}
+    @keyframes slideIn{from{transform:translateY(-10px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .alert-up{background:rgba(29,185,117,0.15);border:1px solid rgba(29,185,117,0.3);}
+    .alert-dn{background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.3);}
+    .alert-icon{font-size:16px;flex-shrink:0;}
+    .alert-text{flex:1;}
+    .alert-close{cursor:pointer;color:var(--t3);font-size:14px;padding:2px;}
 
     /* COURS BAR */
-    #cours-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
+    #cours-bar{display:flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
     #cours-scroll{flex:1;overflow:hidden;position:relative;height:20px;}
     #cours-ticker{display:flex;gap:20px;position:absolute;white-space:nowrap;animation:ticker 35s linear infinite;}
     @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
     .ci{display:flex;align-items:center;gap:5px;font-size:11px;}
-    .cs{font-weight:700;color:var(--t1);}.cv{color:var(--t2);}.cup{color:var(--gbright);}.cdn{color:var(--red);}
+    .cs{font-weight:700;}.cv{color:var(--t2);}.cup{color:var(--gbright);}.cdn{color:var(--red);}
     #ref-btn{flex-shrink:0;padding:4px 10px;border-radius:20px;background:var(--bgc);border:1px solid var(--border2);font-size:11px;color:var(--t2);cursor:pointer;font-family:var(--font);}
+    .auto-badge{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gbright);margin-left:4px;animation:blink 1s ease-in-out infinite;}
 
     /* API BANNER */
     #api-banner{padding:10px 16px;background:linear-gradient(135deg,#0A2A1A,#0A1F14);border-bottom:1px solid var(--border);flex-shrink:0;}
@@ -62,33 +75,47 @@
     #api-input:focus{outline:none;border-color:var(--green);}#api-input::placeholder{color:var(--t3);}
     #api-save{padding:8px 16px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);}
 
-    /* MODAL PORTEFEUILLE */
-    #modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;backdrop-filter:blur(4px);align-items:flex-end;justify-content:center;}
-    #modal-overlay.open{display:flex;}
-    #modal{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:85vh;display:flex;flex-direction:column;border-top:1px solid var(--border2);}
-    #modal-head{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-    #modal-head h2{font-size:16px;font-weight:600;}
-    #modal-close{width:30px;height:30px;border-radius:50%;background:var(--bgc);border:1px solid var(--border);color:var(--t2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-    #modal-body{flex:1;overflow-y:auto;padding:16px;}
-    #modal-body::-webkit-scrollbar{width:3px;}
-    .modal-section{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin:12px 0 8px;}
+    /* MODAL BASE */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;backdrop-filter:blur(4px);align-items:flex-end;justify-content:center;}
+    .modal-overlay.open{display:flex;}
+    .modal-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:88vh;display:flex;flex-direction:column;border-top:1px solid var(--border2);}
+    .modal-head{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .modal-head h2{font-size:16px;font-weight:600;}
+    .modal-close{width:30px;height:30px;border-radius:50%;background:var(--bgc);border:1px solid var(--border);color:var(--t2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .modal-body{flex:1;overflow-y:auto;padding:16px;}
+    .modal-body::-webkit-scrollbar{width:3px;}
+
+    /* ALERTES MODAL */
+    .alert-form{background:var(--bgc);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:14px;}
+    .alert-form label{font-size:11px;color:var(--t3);display:block;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;}
+    .af-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+    .af-select{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--t1);font-family:var(--font);}
+    .af-select:focus{outline:none;border-color:var(--green);}
+    .af-input{flex:1;min-width:80px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--t1);font-family:var(--font);}
+    .af-input:focus{outline:none;border-color:var(--green);}
+    .af-btn{padding:8px 16px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);}
+    .section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);margin:16px 0 8px;}
+    .alert-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bgc);border:1px solid var(--border2);border-radius:10px;margin-bottom:8px;}
+    .alert-row-info{flex:1;}
+    .alert-row-ticker{font-size:13px;font-weight:600;}
+    .alert-row-detail{font-size:11px;color:var(--t3);margin-top:2px;}
+    .alert-toggle{width:44px;height:24px;border-radius:12px;position:relative;cursor:pointer;transition:background 0.2s;border:none;flex-shrink:0;}
+    .alert-toggle.on{background:var(--green);}
+    .alert-toggle.off{background:var(--border2);}
+    .alert-toggle::after{content:'';position:absolute;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left 0.2s;}
+    .alert-toggle.on::after{left:22px;}
+    .alert-toggle.off::after{left:2px;}
+    .alert-del{width:28px;height:28px;border-radius:50%;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.2);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .empty-state{text-align:center;padding:24px;color:var(--t3);font-size:13px;}
+
+    /* PORTEFEUILLE MODAL */
     .stock-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
-    .stock-row-info{flex:1;}
-    .stock-row-ticker{font-size:13px;font-weight:600;}
-    .stock-row-name{font-size:11px;color:var(--t3);}
+    .stock-row-info{flex:1;}.stock-row-ticker{font-size:13px;font-weight:600;}.stock-row-name{font-size:11px;color:var(--t3);}
     .qty-input{width:70px;background:var(--bgc);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--t1);font-family:var(--font);text-align:center;}
     .qty-input:focus{outline:none;border-color:var(--green);}
-    .del-btn{width:28px;height:28px;border-radius:50%;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.2);color:var(--red);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-    #add-form{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
-    #new-ticker{flex:1;min-width:80px;background:var(--bgc);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--t1);font-family:var(--font);text-transform:uppercase;}
-    #new-ticker::placeholder{color:var(--t3);text-transform:none;}
-    #new-ticker:focus{outline:none;border-color:var(--green);}
-    #new-name{flex:2;min-width:100px;background:var(--bgc);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--t1);font-family:var(--font);}
-    #new-name::placeholder{color:var(--t3);}#new-name:focus{outline:none;border-color:var(--green);}
-    #new-qty{width:70px;background:var(--bgc);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--t1);font-family:var(--font);text-align:center;}
-    #new-qty:focus{outline:none;border-color:var(--green);}
-    #add-btn{padding:8px 14px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);}
-    #save-portfolio-btn{width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);margin-top:16px;}
+    .del-btn{width:28px;height:28px;border-radius:50%;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.2);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .add-form{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+    .save-btn{width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);margin-top:16px;}
 
     /* DRAWER */
     #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;backdrop-filter:blur(2px);}
@@ -99,10 +126,9 @@
     #dc{width:30px;height:30px;border-radius:50%;background:var(--bgc);border:1px solid var(--border);color:var(--t2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
     .plabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--t3);padding:12px 16px 6px;}
     .pbadge{display:inline-flex;align-items:center;margin:0 16px 8px;padding:3px 10px;border-radius:20px;font-size:11px;}
-    .bg{background:rgba(13,122,78,0.2);color:var(--gbright);border:1px solid rgba(13,122,78,0.3);}
-    .bo{background:rgba(212,175,55,0.15);color:var(--gold);border:1px solid rgba(212,175,55,0.25);}
+    .bg-g{background:rgba(13,122,78,0.2);color:var(--gbright);border:1px solid rgba(13,122,78,0.3);}
+    .bg-o{background:rgba(212,175,55,0.15);color:var(--gold);border:1px solid rgba(212,175,55,0.25);}
     .dscroll{flex:1;overflow-y:auto;padding-bottom:16px;}
-    .dscroll::-webkit-scrollbar{width:3px;}
     .sitem{display:flex;align-items:center;padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--border);gap:12px;transition:background 0.15s;}
     .sitem:active{background:var(--bgc);}
     .sico{width:34px;height:34px;border-radius:8px;background:var(--bgc);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--gbright);flex-shrink:0;}
@@ -162,7 +188,7 @@
     <div class="sbh">
       <div style="display:flex;align-items:center;gap:10px">
         <div class="avatar" style="width:36px;height:36px;font-size:12px">DK</div>
-        <div><div style="font-size:15px;font-weight:600">Dr. Kofi</div><div style="font-size:11px;color:var(--t3)"><span class="sdot"></span> BRVM · Actif</div></div>
+        <div><div style="font-size:15px;font-weight:600">Dr. Kofi</div><div style="font-size:11px;color:var(--t3)"><span class="sdot"></span> BRVM</div></div>
       </div>
     </div>
     <div class="plabel" style="padding-top:12px">Futur Afrique+</div>
@@ -180,12 +206,19 @@
         <div class="tb-name">Dr. Kofi</div>
         <div class="tb-sub"><span class="sdot"></span>Conseiller IA BRVM</div>
       </div>
-      <div class="tb-btn" onclick="openModal()" title="Mon portefeuille">✏️</div>
-      <div class="tb-btn" id="pf-btn" onclick="toggleDrawer()" title="Portefeuille">📊</div>
+      <div class="tb-btn" onclick="openAlertModal()" title="Alertes">
+        🔔
+        <span class="badge-count" id="alert-badge" style="display:none">0</span>
+      </div>
+      <div class="tb-btn" onclick="openPortfolioModal()" title="Portefeuille">✏️</div>
+      <div class="tb-btn" id="pf-btn" onclick="toggleDrawer()">📊</div>
     </div>
 
+    <!-- ALERT BANNER -->
+    <div id="alert-banner"></div>
+
     <div id="cours-bar">
-      <div id="cours-scroll"><div id="cours-ticker"><span class="ci"><span class="cs">BRVM</span><span class="cv">Appuyez sur ⟳ pour charger les cours</span></span></div></div>
+      <div id="cours-scroll"><div id="cours-ticker"><span class="ci"><span class="cv" style="color:var(--t3)">Appuyez sur ⟳ pour charger les cours</span></span></div></div>
       <button id="ref-btn" onclick="fetchCours()">⟳ Cours</button>
     </div>
 
@@ -201,12 +234,12 @@
       <div style="text-align:center;padding:24px;max-width:320px;margin:auto;">
         <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#0A4F2E,#0D7A4E);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin:0 auto 16px;box-shadow:0 0 0 8px rgba(13,122,78,0.1)">DK</div>
         <div style="font-size:20px;font-weight:700;margin-bottom:6px">Bonjour, Usman !</div>
-        <div style="font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:20px">Conseiller IA BRVM · Futur Afrique+<br>Entrez votre clé Gemini pour commencer.<br><br>Appuyez sur <strong>✏️</strong> pour modifier votre portefeuille.</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px">Conseiller IA BRVM · Futur Afrique+<br><br>🔔 <strong>Alertes de prix</strong> disponibles<br>✏️ Modifier le portefeuille<br>⟳ Cours du jour</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
-          <span class="chip" onclick="sendChip('Analyse mon portefeuille Phase 1')">Analyser Phase 1</span>
-          <span class="chip" onclick="sendChip('Dividendes attendus cette année ?')">Dividendes</span>
-          <span class="chip" onclick="sendChip('Mon DCA 50 000 FCFA est-il optimal ?')">DCA</span>
-          <span class="chip" onclick="sendChip('Quand lancer la Phase 2 ?')">Phase 2</span>
+          <span class="chip" onclick="sendChip('Analyse mon portefeuille Phase 1')">Analyser</span>
+          <span class="chip" onclick="sendChip('Dividendes attendus ?')">Dividendes</span>
+          <span class="chip" onclick="sendChip('DCA 50 000 FCFA optimal ?')">DCA</span>
+          <span class="chip" onclick="sendChip('Quand lancer Phase 2 ?')">Phase 2</span>
         </div>
       </div>
     </div>
@@ -214,10 +247,10 @@
     <div id="chips" style="display:none">
       <span class="chip" onclick="sendChip('Analyse mon portefeuille complet')">Analyser</span>
       <span class="chip" onclick="sendChip('Dividendes attendus ?')">Dividendes</span>
-      <span class="chip" onclick="sendChip('DCA 50k FCFA optimal ?')">DCA</span>
-      <span class="chip" onclick="sendChip('Risques BRVM actuels ?')">Risques</span>
-      <span class="chip" onclick="sendChip('Quand lancer Phase 2 ?')">Phase 2</span>
-      <span class="chip" onclick="sendChip('Meilleur titre de mon portefeuille ?')">Top titre</span>
+      <span class="chip" onclick="sendChip('DCA optimal ?')">DCA</span>
+      <span class="chip" onclick="sendChip('Risques BRVM ?')">Risques</span>
+      <span class="chip" onclick="sendChip('Quand Phase 2 ?')">Phase 2</span>
+      <span class="chip" onclick="sendChip('Top titre de mon portefeuille ?')">Top titre</span>
     </div>
 
     <div id="input-bar">
@@ -233,10 +266,10 @@
   <div id="dh"><h2>📊 Mon Portefeuille</h2><button id="dc" onclick="closeDrawer()">✕</button></div>
   <div class="dscroll">
     <div class="plabel">Phase 1 — Actif</div>
-    <span class="pbadge bg" id="p1-badge">— titres</span>
+    <span class="pbadge bg-g" id="p1-badge">— titres</span>
     <div id="d-stocks"></div>
     <div class="plabel" style="padding-top:10px">Phase 2 — Planifiée</div>
-    <span class="pbadge bo">3–6 mois</span>
+    <span class="pbadge bg-o">3–6 mois</span>
     <div id="d-stocks2"></div>
   </div>
   <div class="dfooter">
@@ -245,31 +278,68 @@
   </div>
 </div>
 
-<!-- MODAL PORTEFEUILLE -->
-<div id="modal-overlay" onclick="e=>e.target===this&&closeModal()">
-  <div id="modal">
-    <div id="modal-head">
-      <h2>✏️ Mon Portefeuille</h2>
-      <button id="modal-close" onclick="closeModal()">✕</button>
+<!-- MODAL ALERTES -->
+<div class="modal-overlay" id="alert-modal" onclick="e=>{if(e.target===document.getElementById('alert-modal'))closeAlertModal();}">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <h2>🔔 Alertes de Prix</h2>
+      <button class="modal-close" onclick="closeAlertModal()">✕</button>
     </div>
-    <div id="modal-body">
-      <div class="modal-section">Phase 1 — Titres actifs</div>
-      <div id="edit-p1"></div>
-      <div class="modal-section" style="margin-top:16px">Ajouter un titre</div>
-      <div id="add-form">
-        <input id="new-ticker" placeholder="TICKER" maxlength="8"/>
-        <input id="new-name" placeholder="Nom de la société"/>
-        <input id="new-qty" type="number" placeholder="Qté" min="0"/>
-        <button id="add-btn" onclick="addStock()">+ Ajouter</button>
+    <div class="modal-body">
+      <div class="alert-form">
+        <label>Nouvelle alerte</label>
+        <div class="af-row">
+          <select class="af-select" id="al-ticker">
+            <option value="">Titre...</option>
+          </select>
+          <select class="af-select" id="al-type">
+            <option value="above">📈 Dépasse</option>
+            <option value="below">📉 Tombe sous</option>
+            <option value="pct_up">🚀 +% hausse</option>
+            <option value="pct_dn">💥 -% baisse</option>
+          </select>
+        </div>
+        <div class="af-row">
+          <input class="af-input" type="number" id="al-value" placeholder="Prix en FCFA ou %" min="0"/>
+          <button class="af-btn" onclick="addAlert()">+ Ajouter</button>
+        </div>
+        <div style="font-size:11px;color:var(--t3)">💡 Les alertes se déclenchent pendant que l'app est ouverte. Actualisation auto toutes les 5 min.</div>
       </div>
-      <button id="save-portfolio-btn" onclick="savePortfolio()">💾 Enregistrer le portefeuille</button>
+
+      <div class="section-title">Alertes actives</div>
+      <div id="alerts-list"><div class="empty-state">Aucune alerte configurée.<br>Ajoutez-en une ci-dessus !</div></div>
+
+      <div class="section-title" style="margin-top:20px">Historique</div>
+      <div id="alerts-history"><div class="empty-state">Aucune alerte déclenchée.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PORTEFEUILLE -->
+<div class="modal-overlay" id="pf-modal" onclick="e=>{if(e.target===document.getElementById('pf-modal'))closePfModal();}">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <h2>✏️ Mon Portefeuille</h2>
+      <button class="modal-close" onclick="closePfModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="section-title">Phase 1 — Titres actifs</div>
+      <div id="edit-p1"></div>
+      <div class="section-title" style="margin-top:16px">Ajouter un titre</div>
+      <div class="add-form">
+        <input class="af-input" id="new-ticker" placeholder="TICKER" maxlength="8" style="flex:1;min-width:80px;text-transform:uppercase"/>
+        <input class="af-input" id="new-name" placeholder="Nom société" style="flex:2;min-width:100px"/>
+        <input class="af-input" type="number" id="new-qty" placeholder="Qté" min="0" style="width:70px;flex:none"/>
+        <button class="af-btn" onclick="addStock()">+</button>
+      </div>
+      <button class="save-btn" onclick="savePortfolio()">💾 Enregistrer</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── PORTFOLIO (localStorage) ──
-const DEFAULT_P1 = [
+// ── DATA ──
+const DEFAULT_P = [
   {t:'SNTS',n:'Sonatel',q:26,phase:1},
   {t:'BOABF',n:'BOA Burkina Faso',q:107,phase:1},
   {t:'STBC',n:'SITAB CI',q:20,phase:1},
@@ -283,84 +353,185 @@ const DEFAULT_P1 = [
   {t:'SPHC',n:'SAPHIC CI',q:null,phase:2},
 ];
 
-function loadPortfolio(){
-  try{const s=localStorage.getItem('drkofi_portfolio');return s?JSON.parse(s):DEFAULT_P1;}catch(e){return DEFAULT_P1;}
-}
-function savePortfolioData(data){
-  try{localStorage.setItem('drkofi_portfolio',JSON.stringify(data));}catch(e){}
-}
+function loadData(key,def){try{const s=localStorage.getItem(key);return s?JSON.parse(s):def;}catch(e){return def;}}
+function saveData(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
 
-let portfolio = loadPortfolio();
-let coursData = {};
-let apiKey = '';
-let history = [];
+let portfolio=loadData('drkofi_portfolio',DEFAULT_P);
+let alerts=loadData('drkofi_alerts',[]);
+let alertHistory=loadData('drkofi_alert_history',[]);
+let coursData={};
+let apiKey='';
+let history=[];
+let autoRefreshTimer=null;
+let triggeredAlerts=new Set();
 
-const SYSTEM = `Tu es Dr. Kofi, conseiller financier IA expert de la BRVM. Tu parles exclusivement en français, ton professionnel mais accessible.
-
-CONTEXTE — Usman (Dakar, guide touristique indépendant) :
+const SYSTEM=`Tu es Dr. Kofi, conseiller financier IA expert de la BRVM. Tu parles exclusivement en français.
+CONTEXTE — Usman (Dakar, guide touristique):
 - Portefeuille "Futur Afrique+" via CGF Bourse
-- Objectif : 100 000 000 FCFA (~11 ans, 18-22%/an)
-- DCA : 50 000 FCFA/mois → SNTS 30%, STBC 25%, BOABF 20%, SOGC 15%, TTLC 10%
-- Broker : CGF Bourse, ~1% commission
+- Objectif: 100 000 000 FCFA (~11 ans, 18-22%/an)
+- DCA: 50 000 FCFA/mois → SNTS 30%, STBC 25%, BOABF 20%, SOGC 15%, TTLC 10%
+- Broker: CGF Bourse, ~1% commission
+RÈGLES: CABC=SICABLE CI. Ne pas inventer de cours. Utiliser les cours du contexte si disponibles. Réponses concises et professionnelles.`;
 
-RÈGLES :
-- CABC = SICABLE CI (câbles électriques), PAS Coris Bank
-- Ne pas inventer de cours — référer à BRVM.org ou SikaFinance si indisponibles
-- Si des cours sont fournis dans le contexte, les utiliser dans l'analyse
-- Conseils sur stratégie, allocation, dividendes, risques UEMOA
-- Réponses concises, structurées, professionnelles`;
-
-// ── MODAL ──
-function openModal(){
-  renderEditForm();
-  document.getElementById('modal-overlay').classList.add('open');
+// ── ALERTES ──
+function openAlertModal(){
+  populateAlertSelect();
+  renderAlertsList();
+  renderAlertsHistory();
+  document.getElementById('alert-modal').classList.add('open');
 }
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
-document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('modal-overlay'))closeModal();});
+function closeAlertModal(){document.getElementById('alert-modal').classList.remove('open');}
+
+function populateAlertSelect(){
+  const sel=document.getElementById('al-ticker');
+  sel.innerHTML='<option value="">Choisir un titre...</option>'+
+    portfolio.map(s=>`<option value="${s.t}">${s.t} — ${s.n}</option>`).join('');
+}
+
+function addAlert(){
+  const ticker=document.getElementById('al-ticker').value;
+  const type=document.getElementById('al-type').value;
+  const value=parseFloat(document.getElementById('al-value').value);
+  if(!ticker||isNaN(value)||value<=0){alert('Remplissez tous les champs.');return;}
+  const stock=portfolio.find(s=>s.t===ticker);
+  const alert={id:Date.now(),ticker,name:stock?.n||ticker,type,value,active:true,created:new Date().toLocaleDateString('fr-FR')};
+  alerts.push(alert);
+  saveData('drkofi_alerts',alerts);
+  document.getElementById('al-ticker').value='';
+  document.getElementById('al-value').value='';
+  renderAlertsList();
+  updateAlertBadge();
+}
+
+function typeLabel(type,value){
+  const labels={above:`📈 Dépasse ${fmt(value)}`,below:`📉 Tombe sous ${fmt(value)}`,pct_up:`🚀 Hausse de +${value}%`,pct_dn:`💥 Baisse de -${value}%`};
+  return labels[type]||type;
+}
+
+function renderAlertsList(){
+  const el=document.getElementById('alerts-list');
+  if(!alerts.length){el.innerHTML='<div class="empty-state">Aucune alerte.<br>Ajoutez-en une ci-dessus !</div>';return;}
+  el.innerHTML=alerts.map(a=>`
+    <div class="alert-row" id="al-${a.id}">
+      <div class="alert-row-info">
+        <div class="alert-row-ticker">${a.ticker} — ${a.name}</div>
+        <div class="alert-row-detail">${typeLabel(a.type,a.value)}</div>
+      </div>
+      <button class="alert-toggle ${a.active?'on':'off'}" onclick="toggleAlert(${a.id})"></button>
+      <button class="alert-del" onclick="deleteAlert(${a.id})">🗑</button>
+    </div>`).join('');
+}
+
+function renderAlertsHistory(){
+  const el=document.getElementById('alerts-history');
+  if(!alertHistory.length){el.innerHTML='<div class="empty-state">Aucune alerte déclenchée.</div>';return;}
+  el.innerHTML=alertHistory.slice(-10).reverse().map(h=>`
+    <div style="padding:8px 12px;background:var(--bgc);border-radius:8px;margin-bottom:6px;font-size:12px;">
+      <span style="color:${h.type==='up'?'var(--gbright)':'var(--red)'}">${h.type==='up'?'📈':'📉'} ${h.ticker}</span>
+      <span style="color:var(--t2);margin-left:6px">${h.msg}</span>
+      <span style="color:var(--t3);display:block;margin-top:2px;font-size:10px">${h.time}</span>
+    </div>`).join('');
+}
+
+function toggleAlert(id){
+  const a=alerts.find(x=>x.id===id);
+  if(a){a.active=!a.active;saveData('drkofi_alerts',alerts);renderAlertsList();}
+}
+
+function deleteAlert(id){
+  alerts=alerts.filter(x=>x.id!==id);
+  saveData('drkofi_alerts',alerts);
+  renderAlertsList();
+  updateAlertBadge();
+}
+
+function updateAlertBadge(){
+  const badge=document.getElementById('alert-badge');
+  const count=alerts.filter(a=>a.active).length;
+  if(count>0){badge.textContent=count;badge.style.display='flex';}
+  else{badge.style.display='none';}
+}
+
+function checkAlerts(){
+  if(!Object.keys(coursData).length)return;
+  const triggered=[];
+  alerts.filter(a=>a.active).forEach(a=>{
+    const c=coursData[a.ticker];
+    if(!c)return;
+    const key=`${a.id}-${Math.floor(Date.now()/60000)}`;
+    if(triggeredAlerts.has(key))return;
+    let hit=false,msg='',type='';
+    if(a.type==='above'&&c.price>=a.value){hit=true;msg=`${a.ticker} à ${fmt(c.price)} — dépasse ${fmt(a.value)}`;type='up';}
+    else if(a.type==='below'&&c.price<=a.value){hit=true;msg=`${a.ticker} à ${fmt(c.price)} — sous ${fmt(a.value)}`;type='dn';}
+    else if(a.type==='pct_up'&&c.pct>=a.value){hit=true;msg=`${a.ticker} +${fmtP(c.pct)} — hausse de ${a.value}% atteinte`;type='up';}
+    else if(a.type==='pct_dn'&&c.pct<=-a.value){hit=true;msg=`${a.ticker} ${fmtP(c.pct)} — baisse de ${a.value}% atteinte`;type='dn';}
+    if(hit){
+      triggeredAlerts.add(key);
+      triggered.push({ticker:a.ticker,msg,type});
+      alertHistory.push({ticker:a.ticker,msg,type,time:new Date().toLocaleString('fr-FR')});
+      saveData('drkofi_alert_history',alertHistory);
+      playAlertSound(type);
+    }
+  });
+  if(triggered.length)showAlertBanner(triggered);
+}
+
+function playAlertSound(type){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.frequency.value=type==='up'?880:440;
+    osc.type='sine';gain.gain.value=0.3;
+    osc.start();gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.5);
+    osc.stop(ctx.currentTime+0.5);
+  }catch(e){}
+}
+
+function showAlertBanner(triggered){
+  const banner=document.getElementById('alert-banner');
+  banner.innerHTML=triggered.map(t=>`
+    <div class="alert-item ${t.type==='up'?'alert-up':'alert-dn'}">
+      <span class="alert-icon">${t.type==='up'?'📈':'📉'}</span>
+      <span class="alert-text"><strong>${t.msg}</strong></span>
+      <span class="alert-close" onclick="this.parentElement.remove();if(!document.querySelector('.alert-item'))document.getElementById('alert-banner').classList.remove('active')">✕</span>
+    </div>`).join('');
+  banner.classList.add('active');
+  setTimeout(()=>{banner.classList.remove('active');banner.innerHTML='';},15000);
+}
+
+// ── PORTEFEUILLE MODAL ──
+function openPortfolioModal(){renderEditForm();document.getElementById('pf-modal').classList.add('open');}
+function closePfModal(){document.getElementById('pf-modal').classList.remove('open');}
 
 function renderEditForm(){
-  const p1 = portfolio.filter(s=>s.phase===1);
-  const el = document.getElementById('edit-p1');
-  el.innerHTML = p1.map((s,i)=>`
-    <div class="stock-row" id="row-${s.t}">
-      <div class="stock-row-info">
-        <div class="stock-row-ticker">${s.t}</div>
-        <div class="stock-row-name">${s.n}</div>
-      </div>
-      <input class="qty-input" type="number" value="${s.q||0}" min="0" id="qty-${s.t}" placeholder="Qté"/>
+  const el=document.getElementById('edit-p1');
+  el.innerHTML=portfolio.filter(s=>s.phase===1).map(s=>`
+    <div class="stock-row">
+      <div class="stock-row-info"><div class="stock-row-ticker">${s.t}</div><div class="stock-row-name">${s.n}</div></div>
+      <input class="qty-input" type="number" value="${s.q||0}" min="0" id="qty-${s.t}"/>
       <button class="del-btn" onclick="removeStock('${s.t}')">🗑</button>
     </div>`).join('');
 }
 
-function removeStock(ticker){
-  if(!confirm(`Supprimer ${ticker} du portefeuille ?`))return;
-  portfolio = portfolio.filter(s=>s.t!==ticker);
-  renderEditForm();
-}
+function removeStock(t){if(!confirm(`Supprimer ${t} ?`))return;portfolio=portfolio.filter(s=>s.t!==t);renderEditForm();}
 
 function addStock(){
-  const t = document.getElementById('new-ticker').value.trim().toUpperCase();
-  const n = document.getElementById('new-name').value.trim();
-  const q = parseInt(document.getElementById('new-qty').value)||0;
+  const t=document.getElementById('new-ticker').value.trim().toUpperCase();
+  const n=document.getElementById('new-name').value.trim();
+  const q=parseInt(document.getElementById('new-qty').value)||0;
   if(!t||!n){alert('Entrez le ticker et le nom.');return;}
-  if(portfolio.find(s=>s.t===t)){alert(`${t} est déjà dans le portefeuille.`);return;}
+  if(portfolio.find(s=>s.t===t)){alert(`${t} déjà dans le portefeuille.`);return;}
   portfolio.push({t,n,q:q||null,phase:1});
-  document.getElementById('new-ticker').value='';
-  document.getElementById('new-name').value='';
-  document.getElementById('new-qty').value='';
+  document.getElementById('new-ticker').value='';document.getElementById('new-name').value='';document.getElementById('new-qty').value='';
   renderEditForm();
 }
 
 function savePortfolio(){
-  // Mettre à jour les quantités depuis les inputs
-  portfolio.filter(s=>s.phase===1).forEach(s=>{
-    const input = document.getElementById(`qty-${s.t}`);
-    if(input) s.q = parseInt(input.value)||0;
-  });
-  savePortfolioData(portfolio);
-  renderAll();
-  closeModal();
-  addMsg('bot',`✅ Portefeuille mis à jour ! Tu as maintenant **${portfolio.filter(s=>s.phase===1).length} titres** en Phase 1.\n\n${portfolio.filter(s=>s.phase===1).map(s=>`• ${s.t} (${s.n}) : ${s.q} actions`).join('\n')}`);
+  portfolio.filter(s=>s.phase===1).forEach(s=>{const i=document.getElementById(`qty-${s.t}`);if(i)s.q=parseInt(i.value)||0;});
+  saveData('drkofi_portfolio',portfolio);
+  renderAll();closePfModal();
+  addMsg('bot',`✅ Portefeuille mis à jour !\n\n${portfolio.filter(s=>s.phase===1).map(s=>`• **${s.t}** : ${s.q} actions`).join('\n')}`);
 }
 
 // ── RENDER ──
@@ -368,13 +539,12 @@ function renderAll(){
   renderDrawer(portfolio.filter(s=>s.phase===1),'d-stocks');
   renderDrawer(portfolio.filter(s=>s.phase===2),'d-stocks2');
   renderSidebar(portfolio);
-  const p1count = portfolio.filter(s=>s.phase===1).length;
-  document.getElementById('p1-badge').textContent = `${p1count} titres`;
+  document.getElementById('p1-badge').textContent=portfolio.filter(s=>s.phase===1).length+' titres';
+  updateAlertBadge();
 }
 
 function renderDrawer(stocks,id){
-  const el=document.getElementById(id);
-  el.innerHTML=stocks.map(s=>`
+  document.getElementById(id).innerHTML=stocks.map(s=>`
     <div class="sitem" onclick="askAbout('${s.t}','${s.n}')">
       <div class="sico">${s.t.substring(0,4)}</div>
       <div class="sdet"><div class="stick">${s.t}</div><div class="sname">${s.n}</div></div>
@@ -383,8 +553,7 @@ function renderDrawer(stocks,id){
 }
 
 function renderSidebar(stocks){
-  const el=document.getElementById('sb-stocks');
-  el.innerHTML=stocks.map(s=>`
+  document.getElementById('sb-stocks').innerHTML=stocks.map(s=>`
     <div class="sbstock" onclick="askAbout('${s.t}','${s.n}')">
       <div class="sico" style="background:var(--bg);width:30px;height:30px;font-size:8px">${s.t.substring(0,4)}</div>
       <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${s.t}</div><div style="font-size:10px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.n}</div></div>
@@ -395,25 +564,30 @@ function renderSidebar(stocks){
 renderAll();
 
 // ── COURS ──
-async function fetchCours(){
+async function fetchCours(auto=false){
   const btn=document.getElementById('ref-btn');
-  btn.textContent='⟳ …';
+  if(!auto)btn.textContent='⟳ …';
   const symbols=portfolio.map(s=>s.t+'.BR').join(',');
   const url=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent`;
   try{
     const res=await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
     const data=await res.json();
-    const quotes=data?.quoteResponse?.result||[];
-    quotes.forEach(q=>{
+    (data?.quoteResponse?.result||[]).forEach(q=>{
       const t=q.symbol.replace('.BR','');
       coursData[t]={price:q.regularMarketPrice,change:q.regularMarketChange,pct:q.regularMarketChangePercent};
     });
     updateCoursBar();updateDrawerPrices();updateSidebarPrices();
-    btn.textContent='✓ OK';setTimeout(()=>btn.textContent='⟳ Cours',2000);
+    checkAlerts();
+    if(!auto){btn.textContent='✓ OK';setTimeout(()=>{btn.textContent='⟳ Cours';btn.innerHTML='⟳ Cours<span class="auto-badge"></span>';},2000);}
   }catch(e){
-    btn.textContent='⟳ Cours';
-    document.getElementById('cours-ticker').innerHTML=`<span class="ci"><span class="cv" style="color:var(--gold)">Cours indisponibles — Consultez BRVM.org</span></span>`.repeat(2);
+    if(!auto){btn.textContent='⟳ Cours';document.getElementById('cours-ticker').innerHTML=`<span class="ci"><span class="cv" style="color:var(--gold)">Cours indisponibles — Consultez BRVM.org</span></span>`.repeat(2);}
   }
+}
+
+function startAutoRefresh(){
+  if(autoRefreshTimer)clearInterval(autoRefreshTimer);
+  autoRefreshTimer=setInterval(()=>fetchCours(true),5*60*1000);
+  document.getElementById('ref-btn').innerHTML='⟳ Cours<span class="auto-badge"></span>';
 }
 
 function fmt(n){return n?Math.round(n).toLocaleString('fr-FR')+' F':'—';}
@@ -425,7 +599,7 @@ function updateCoursBar(){
     return`<span class="ci"><span class="cs">${s.t}</span><span class="cv">${fmt(c.price)}</span><span class="${cls}">${ar}${fmtP(c.pct)}</span></span>`;
   });
   const html=items.join('');
-  document.getElementById('cours-ticker').innerHTML=html+html||document.getElementById('cours-ticker').innerHTML;
+  if(html)document.getElementById('cours-ticker').innerHTML=html+html;
 }
 
 function updateDrawerPrices(){
@@ -434,7 +608,6 @@ function updateDrawerPrices(){
     if(c){const cls=c.change>=0?'cup':'cdn';el.innerHTML=`${fmt(c.price)}<span class="chg ${cls}">${fmtP(c.pct)}</span>`;}
   });
 }
-
 function updateSidebarPrices(){
   document.querySelectorAll('.sb-price').forEach(el=>{
     const c=coursData[el.dataset.ticker];
@@ -456,24 +629,20 @@ function saveKey(){
   document.getElementById('send-btn').disabled=false;
   document.getElementById('chips').style.display='flex';
   document.getElementById('messages').innerHTML='';
-  addMsg('bot','Parfait Usman ! Connecté ✅\n\nAppuyez sur **⟳ Cours** pour les prix du jour, ou **✏️** pour modifier votre portefeuille. 🇸🇳📈');
+  addMsg('bot','Parfait Usman ! Dr. Kofi est actif ✅\n\n🔔 Configurez des alertes de prix avec le bouton **🔔**\n⟳ Cours se rafraîchissent automatiquement toutes les **5 minutes**\n✏️ Modifiez votre portefeuille à tout moment');
   fetchCours();
+  startAutoRefresh();
 }
 document.getElementById('api-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveKey();});
 
 // ── CHAT ──
 function askAbout(t,n){
   if(!apiKey){alert('Activez d\'abord Dr. Kofi.');return;}
-  const prix=coursData[t]?` (cours : ${fmt(coursData[t].price)}, ${fmtP(coursData[t].pct)})`:'';
-  document.getElementById('user-input').value=`Analyse de ${t}/${n}${prix} dans mon portefeuille. Perspectives, dividendes, risques.`;
+  const prix=coursData[t]?` (cours: ${fmt(coursData[t].price)}, ${fmtP(coursData[t].pct)})`:'';
+  document.getElementById('user-input').value=`Analyse de ${t}/${n}${prix}. Perspectives, dividendes, risques.`;
   closeDrawer();sendMessage();
 }
-
-function sendChip(text){
-  if(!apiKey){alert('Activez d\'abord Dr. Kofi.');return;}
-  document.getElementById('user-input').value=text;sendMessage();
-}
-
+function sendChip(text){if(!apiKey){alert('Activez d\'abord Dr. Kofi.');return;}document.getElementById('user-input').value=text;sendMessage();}
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 
@@ -498,35 +667,27 @@ async function sendMessage(){
   if(!text||!apiKey)return;
   input.value='';input.style.height='auto';
   document.getElementById('send-btn').disabled=true;
-
-  // Contexte portefeuille dynamique
-  const pfStr=portfolio.filter(s=>s.phase===1).map(s=>`${s.t}/${s.n}(${s.q||0}actions)`).join(', ');
+  const pfStr=portfolio.filter(s=>s.phase===1).map(s=>`${s.t}/${s.n}(${s.q||0})`).join(', ');
   const coursStr=portfolio.filter(s=>coursData[s.t]).map(s=>`${s.t}:${fmt(coursData[s.t].price)}(${fmtP(coursData[s.t].pct)})`).join(', ');
-  let ctx=text+`\n\n[Portefeuille actuel: ${pfStr}]`;
+  let ctx=text+`\n[Portefeuille: ${pfStr}]`;
   if(coursStr)ctx+=`\n[Cours du jour: ${coursStr}]`;
-
   addMsg('user',text);
   history.push({role:'user',parts:[{text:ctx}]});
   showTyping();
-
   try{
     const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {method:'POST',headers:{'Content-Type':'application/json'},
        body:JSON.stringify({system_instruction:{parts:[{text:SYSTEM}]},contents:history,generationConfig:{temperature:0.72,maxOutputTokens:1024}})});
     const data=await res.json();
     document.getElementById('typing')?.remove();
-    if(data.error){addMsg('bot',`❌ Erreur : ${data.error.message}`);}
-    else{
-      const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Désolé, aucune réponse.';
-      history.push({role:'model',parts:[{text:reply}]});
-      addMsg('bot',reply);
-    }
-  }catch(e){document.getElementById('typing')?.remove();addMsg('bot',`❌ Connexion impossible : ${e.message}`);}
+    if(data.error){addMsg('bot',`❌ Erreur: ${data.error.message}`);}
+    else{const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Désolé.';history.push({role:'model',parts:[{text:reply}]});addMsg('bot',reply);}
+  }catch(e){document.getElementById('typing')?.remove();addMsg('bot',`❌ Connexion impossible: ${e.message}`);}
   document.getElementById('send-btn').disabled=false;
 }
 
 if('serviceWorker'in navigator){
-  const sw=`const C='dk-v3';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;
+  const sw=`const C='dk-v4';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;
   navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
 }
 </script>
