@@ -692,7 +692,7 @@ async function sendMessage(){
   history.push({role:'user',parts:[{text:ctx}]});
   showTyping();
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent?key=${apiKey}`,
       {method:'POST',headers:{'Content-Type':'application/json'},
        body:JSON.stringify({system_instruction:{parts:[{text:SYSTEM}]},contents:history,generationConfig:{temperature:0.72,maxOutputTokens:1024}})});
     const data=await res.json();
