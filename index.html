@@ -204,7 +204,7 @@
       <div class="avatar">DK</div>
       <div class="tb-info">
         <div class="tb-name">Dr. Kofi</div>
-        <div class="tb-sub"><span class="sdot"></span>Conseiller IA BRVM</div>
+        <div class="tb-sub"><span class="sdot"></span>Conseiller IA BRVM · Groq</div>
       </div>
       <div class="tb-btn" onclick="openAlertModal()" title="Alertes">
         🔔
@@ -223,7 +223,7 @@
     </div>
 
     <div id="api-banner">
-      <p>🔑 Entrez votre <strong>clé API Gemini</strong> pour activer Dr. Kofi</p>
+      <p>🔑 Entrez votre <strong>clé API Groq</strong> (commence par gsk_...)</p>
       <div class="api-row">
         <input type="password" id="api-input" placeholder="AIza..." autocomplete="off"/>
         <button id="api-save" onclick="saveKey()">Activer</button>
@@ -692,13 +692,21 @@ async function sendMessage(){
   history.push({role:'user',parts:[{text:ctx}]});
   showTyping();
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent?key=${apiKey}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({system_instruction:{parts:[{text:SYSTEM}]},contents:history,generationConfig:{temperature:0.72,maxOutputTokens:1024}})});
+    const groqHistory = history.map(m => ({
+      role: m.role === 'model' ? 'assistant' : 'user',
+      content: m.parts[0].text
+    }));
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',
+      {method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
+       body:JSON.stringify({
+         model:'llama-3.3-70b-versatile',
+         messages:[{role:'system',content:SYSTEM},...groqHistory],
+         temperature:0.72,max_tokens:1024
+       })});
     const data=await res.json();
     document.getElementById('typing')?.remove();
     if(data.error){addMsg('bot',`❌ Erreur: ${data.error.message}`);}
-    else{const reply=data.candidates?.[0]?.content?.parts?.[0]?.text||'Désolé.';history.push({role:'model',parts:[{text:reply}]});addMsg('bot',reply);}
+    else{const reply=data.choices?.[0]?.message?.content||'Désolé.';history.push({role:'model',parts:[{text:reply}]});addMsg('bot',reply);}
   }catch(e){document.getElementById('typing')?.remove();addMsg('bot',`❌ Connexion impossible: ${e.message}`);}
   document.getElementById('send-btn').disabled=false;
 }
